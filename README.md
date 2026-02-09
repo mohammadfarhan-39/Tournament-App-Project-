@@ -1,0 +1,2904 @@
+<!DOCTYPE html>
+<html lang="en"
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZARA TOUR - Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    
+    
+    
+    /* --- Firebase Status Top Fix --- */
+.firebase-status {
+    position: fixed f!important;
+    top: 20px !important;       /* একদম উপরে */
+    right: 20px !important;     /* ডান পাশে */
+    bottom: auto !important;    /* নিচের পজিশন বাতিল */
+    left: auto !important;
+    
+    z-index: 100000 !important; /* সবার উপরে ভেসে থাকার জন্য */
+    
+    /* সুন্দর গ্লাস ডিজাইন */
+    background: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(16, 185, 129, 0.5) !important; /* হালকা সবুজ বর্ডার */
+    border-radius: 50px !important;
+    padding: 8px 16px !important;
+    
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+}
+
+/* ডট বা বাতির স্টাইল */
+.status-dot {
+    width: 10px !important;
+    height: 10px !important;
+    background-color: #10b981 !important; /* উজ্জ্বল সবুজ */
+    border-radius: 50%;
+    box-shadow: 0 0 10px #10b981; /* গ্লোয়িং ইফেক্ট */
+    animation: pulse 2s infinite;
+}
+
+/* লেখার স্টাইল */
+#firebaseStatus {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.5px;
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        :root {
+             --primary: #6366f1;
+    --primary-soft: rgba(99, 102, 241, 0.15);
+    --bg-body: #0a0a1a;
+    --surface: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #ffffff;
+    --text-sub: #94a3b8;
+    --border: rgba(255, 255, 255, 0.1);
+    --success: #10b981;
+    --danger: #ef4444;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+             background: var(--bg-body);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .spinner {
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+            padding: 20px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15);
+             background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+        }
+
+        .admin-header h1 {
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .admin-header p {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+            max-width: 1400px; margin: 0 auto; padding: 24px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 14px 28px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+             background: var(--surface) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+    color: var(--text-main) !important;
+      padding: 12px 24px;
+    border-radius: var(--radius-md) !important;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+              background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3) !important;
+        }
+
+        .tab-btn:active {
+            transform: scale(0.97);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+             background: var(--surface) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+    color: var(--text-main) !important;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            color: var(--text-sub); font-size: 13px; font-weight: 600; margin-bottom: 8px; display: block;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            color: var(--text-main);
+            background: var(--surface);
+            transition: all 0.3s ease;
+              background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 12px;
+    color: white !important;
+    padding: 14px;
+    width: 100%;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+               background-color: rgba(255, 255, 255, 0.1) !important;
+    outline: none;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px; border-radius: 12px; font-weight: 700; cursor: pointer; border: none; transition: 0.3s;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            background: linear-gradient(135deg, #4f46e5, #6366f1); color: white;
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            background: #10b981; color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            background: #ef4444; color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .tournament-item {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+             background: var(--surface) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+    color: var(--text-main) !important;
+    border-radius: 20px !important;
+    padding: 20px;
+    margin-bottom: 16px;
+        }
+
+        .tournament-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .tournament-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .tournament-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .tournament-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-sub);
+        }
+
+        .info-item i {
+            color: var(--primary);
+        }
+
+        .tournament-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .request-item {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+             background: var(--surface) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+    color: var(--text-main) !important;
+    border-radius: 20px !important;
+    padding: 20px;
+    margin-bottom: 16px;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .request-user {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .request-amount {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .request-info {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .badge-warning {
+            background: rgba(251, 191, 36, 0.1);
+            color: #f59e0b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+             
+            /* গ্লাস ব্যাকগ্রাউন্ড */
+    background: rgba(255, 255, 255, 0.06) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+    
+    /* বর্ডার ও শ্যাডো */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 25px !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2) !important;
+    
+    padding: 25px 20px !important;
+    text-align: center;
+    transition: transform 0.3s ease;
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1) !important;
+    
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            font-size: 32px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .participants-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .participant-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--bg-body);
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+        }
+
+        .participant-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .participant-name {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .participant-details {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        .user-item {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+             background: var(--surface) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+    color: var(--text-main) !important;
+    border-radius: 20px !important;
+    padding: 20px;
+    margin-bottom: 16px;
+        }
+
+        .user-item.blocked {
+            background: rgba(239, 68, 68, 0.05);
+            border-color: var(--danger);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .tabs {
+                gap: 8px;
+            }
+
+            .tab-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .tournament-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+              background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+             background: var(--surface) !important;
+    backdrop-filter: blur(15px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+    color: var(--text-main) !important;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-sub);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-body);
+            color: var(--text-main);
+        }
+
+        .alert {
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .firebase-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .prize-distribution {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .prize-item {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .prize-item label {
+            min-width: 100px;
+            font-weight: 600;
+        }
+
+        .winner-select-item {
+            background: var(--bg-body);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-bottom: 12px;
+              background-color: rgba(255, 255, 255, 0.05) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .winner-select-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        /* ড্রপডাউন অপশন ফিক্স */
+select option {
+    background-color: #1a1a2e !important; /* অপশনের পেছনের কালার */
+    color: #ffffff !important;           /* লেখার কালার */
+}
+        
+        
+        
+       /* ১. বাটন বা ট্যাবে ক্লিক করলে যে নীল বক্স আসে সেটি বন্ধ করার জন্য */
+button:focus, 
+.tab-btn:focus, 
+.btn:focus, 
+select:focus, 
+input:focus {
+    outline: none !important;
+    box-shadow: none !important; /* যদি শ্যাডো থাকে সেটিও চলে যাবে */
+}
+
+/* ২. মোবাইলে টাচ করলে যে নীল আভা (Highlight) আসে সেটি বন্ধ করার জন্য */
+* {
+    -webkit-tap-highlight-color: transparent !important;
+} 
+      
+
+        .admin-bottom-nav {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 99999 !important;
+
+    /* কন্টেইনার ডিজাইন */
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 8px 12px !important;
+    background: rgba(255, 255, 255, 0.08) !important; /* গ্লাস এফেক্ট */
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 100px !important; /* পিল শেপ */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+
+    /* স্ক্রল লজিক */
+    width: auto !important;
+    max-width: 90vw !important; /* স্ক্রিনের চওড়ার ৯০% এর বেশি হবে না */
+    overflow-x: auto !important; /* ডানে-বামে স্ক্রল হবে */
+    white-space: nowrap !important; /* বাটনগুলো এক লাইনে থাকবে */
+    scrollbar-width: none; /* Firefox এর জন্য স্ক্রলবার হাইড */
+}
+
+/* Chrome/Safari এর জন্য স্ক্রলবার হাইড */
+.admin-bottom-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.admin-bottom-nav .tab-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 12px 20px !important;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 50px !important;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(255, 255, 255, 0.6) !important;
+    flex-shrink: 0 !important; /* বাটনগুলোকে চ্যাপ্টা হতে দেবে না */
+}
+
+.admin-bottom-nav .tab-btn i {
+    font-size: 18px !important;
+}
+
+.admin-bottom-nav .tab-btn span {
+    font-size: 14px;
+    font-weight: 700;
+    display: none; /* শুরুতে সব নাম লুকানো */
+}
+
+/* অ্যাক্টিভ বাটন স্টাইল (ছবির মতো ব্যাকগ্রাউন্ড এবং নাম দেখাবে) */
+.admin-bottom-nav .tab-btn.active {
+    background: var(--primary) !important; /* আপনার সেট করা নীল কালার */
+    color: white !important;
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4) !important;
+}
+
+.admin-bottom-nav .tab-btn.active span {
+    display: inline-block !important; /* শুধু অ্যাক্টিভটার নাম দেখাবে */
+}
+
+/* বডির নিচে প্যাডিং বাড়ানো */
+body {
+    padding-bottom: 120px !important;
+    overflow-x: hidden !important;
+}
+
+
+
+/* --- Settings Accordion UI --- */
+.setting-group {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.setting-header {
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 15px;
+    color: white;
+}
+
+.setting-header i.arrow {
+    transition: transform 0.3s ease;
+    opacity: 0.5;
+}
+
+.setting-content {
+    padding: 0 20px 20px 20px;
+    display: none; /* শুরুতে বন্ধ থাকবে */
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* এক্টিভ বা খোলা থাকলে যা হবে */
+.setting-group.active {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--primary);
+}
+
+.setting-group.active .setting-content {
+    display: block;
+}
+
+.setting-group.active i.arrow {
+    transform: rotate(180deg);
+}
+
+.setting-header span i {
+    margin-right: 10px;
+    color: var(--primary);
+}
+
+    /* --- Admin Theme Controller CSS --- */
+
+/* ১. নরমাল মোডে পেছনের ব্লব এবং এনিমেশন বন্ধ */
+body:not(.glass-enabled) .blob-1, 
+body:not(.glass-enabled) .blob-2, 
+body:not(.glass-enabled) .blob-3 {
+    display: none !important;
+}
+
+/* ২. নরমাল মোডে সব কার্ড সলিড ডার্ক কালার হবে (স্মুথ পারফরম্যান্স) */
+body:not(.glass-enabled) .card, 
+body:not(.glass-enabled) .tournament-item, 
+body:not(.glass-enabled) .request-item, 
+body:not(.glass-enabled) .user-item, 
+body:not(.glass-enabled) .modal-content, 
+body:not(.glass-enabled) .admin-bottom-nav,
+body:not(.glass-enabled) .tab-btn {
+    background: #0f172a !important; /* ডার্ক সলিড কালার */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #1e293b !important;
+    box-shadow: none !important;
+}
+
+/* ৩. নরমাল মোডে হেডার ফিক্স */
+body:not(.glass-enabled) .admin-header {
+    background: #020617 !important;
+    backdrop-filter: none !important;
+}   
+        
+       /* --- User Style Tournament Card for Admin --- */
+.tc-card { 
+    background: var(--surface); 
+    border: 1px solid var(--glass-border); 
+    border-radius: 20px; 
+    padding: 18px; 
+    margin-bottom: 20px; 
+    color: var(--text-main); 
+    box-shadow: var(--card-shadow);
+}
+
+.tc-header { 
+    display: flex; 
+    align-items: flex-start; 
+    gap: 12px; 
+    margin-bottom: 15px; 
+}
+
+.tc-image { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; border: 2px solid var(--primary); }
+.tc-title-section { 
+    flex: 1; 
+}
+
+.tc-title { font-size: 18px; font-weight: 800; color: #fff; }
+.tc-time { font-size: 12px; color: var(--text-sub); display: flex; align-items: center; gap: 6px; margin-top: 5px; }
+.tc-match-id { 
+    font-size: 10px; 
+    font-weight: 700; 
+    background: rgba(255,255,255,0.1); 
+    padding: 3px 8px; 
+    border-radius: 6px; 
+    border: 1px solid var(--glass-border); 
+    color: var(--text-sub) !important;
+}
+.tc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.tc-tag { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 50px; font-size: 11px; font-weight: 700; color: white; background: var(--primary); }
+.tc-prize-info { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; text-align: center; margin-bottom: 18px; padding: 10px 0; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); }
+.tc-prize-label { font-size: 11px; color: var(--text-sub); margin-bottom: 4px; text-transform: uppercase; }
+.tc-prize-value { font-size: 18px; font-weight: 800; color: #fff; }
+.tc-progress-bar-container {
+    width: 100% !important;
+    background: rgba(255, 255, 255, 0.05) !important; /* হালকা ডার্ক গ্লাস */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50px !important; /* পুরোপুরি গোল */
+    height: 16px !important; /* একটু মোটা করা হলো */
+    position: relative !important;
+    margin-bottom: 20px !important;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+}
+.tc-progress-bar-fill {
+    height: 100% !important;
+    /* আপনার ছবির মতো হলুদ-কমলা-বেগুনি নিয়ন গ্রেডিয়েন্ট */
+    background: linear-gradient(90deg, #ffff00, #ff8c00, #ff0080, #9333ea) !important;
+    
+    border-radius: 50px !important;
+    
+    /* উজ্জ্বল গ্লোয়িং ইফেক্ট */
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.6) !important;
+    
+    /* স্মুথ এনিমেশন */
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.tc-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.tc-btn-admin { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; text-align: center; font-weight: 700; font-size: 13px; color: #fff; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; }
+.tc-btn-admin:hover { background: rgba(255,255,255,0.1); border-color: var(--primary); }
+.tc-status-btn { background: var(--primary); width: 100%; padding: 14px; border-radius: 15px; text-align: center; font-weight: 800; font-size: 15px; color: white; cursor: pointer; } 
+        
+      /* --- Admin Details Page Tabs & Cards --- */
+.dt-tabs { display: flex; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); margin-bottom: 20px; }
+.dt-tab { flex: 1; text-align: center; padding: 12px; font-size: 13px; font-weight: 700; color: var(--text-sub); cursor: pointer; transition: 0.3s; border-right: 1px solid var(--glass-border); }
+.dt-tab.active { background: var(--primary); color: white; }
+.dt-tab:last-child { border-right: none; }
+.dt-card { background: rgba(255,255,255,0.03) !important; backdrop-filter: blur(15px); border: 1px solid var(--glass-border) !important; border-radius: 20px; padding: 20px; margin-bottom: 15px; }
+.dt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.dt-label { font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 4px; }
+.dt-value { font-size: 14px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
+.dt-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--glass-border); color: white; }
+
+/* --- Admin Tournament Details - Crystal Glass Fix --- */
+
+/* ১. ডিটেইলস পেজের মেইন ব্যাকগ্রাউন্ড স্বচ্ছ করা (ইউজার প্যানেলের মতো) */
+#tournamentDetailsPage.details-page {
+    background: rgba(0, 0, 0, 0.3) !important; /* হালকা পর্দা */
+    backdrop-filter: blur(8px) !important;    /* হালকা ব্লার */
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* ২. ডিটেইলস কার্ড এবং ট্যাবগুলো (সুপার ট্রান্সপারেন্ট গ্লাস) */
+#tournamentDetailsPage .dt-card, 
+#tournamentDetailsPage .dt-tabs,
+#tournamentDetailsPage .dt-status-banner {
+    /* একদম স্বচ্ছ সাদা আভা (মাত্র ৩% সাদা) */
+    background: rgba(255, 255, 255, 0.03) !important; 
+    
+    /* শক্তিশালী ব্লার */
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    
+    /* হালকা চিকন বর্ডার */
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 25px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+    color: #ffffff !important;
+}
+
+/* ৩. ট্যাবের ইন-অ্যাক্টিভ অংশ ফিক্স */
+#tournamentDetailsPage .dt-tab {
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#tournamentDetailsPage .dt-tab.active {
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+/* ৪. ভেতরের বক্স ও ডাটা ডিসপ্লে (রুম আইডি/পাসওয়ার্ড বক্স) */
+#tournamentDetailsPage .dt-card div[style*="background: rgba(0,0,0,0.15)"] {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+}
+
+/* ৫. টেক্সট এবং ইমোজি কালার উজ্জ্বল করা */
+#tournamentDetailsPage .dt-label {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#tournamentDetailsPage .dt-value, 
+#tournamentDetailsPage .details-title {
+    color: #ffffff !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* ৬. ব্যাক বাটন ফিক্স */
+#tournamentDetailsPage .back-btn {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* --- Admin Global Popup Theme Controller --- */
+
+/* ১. নরমাল মোডে (Solid UI) সব পপআপের স্টাইল */
+body:not(.glass-enabled) .modal-content {
+    background: #0f172a !important; /* ডার্ক সলিড ব্যাকগ্রাউন্ড */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #1e293b !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    border-radius: 25px !important;
+    color: #ffffff !important;
+}
+
+/* ২. প্রিমিয়াম মোডে (Glass UI) সব পপআপের স্টাইল */
+body.glass-enabled .modal-content {
+    /* স্বচ্ছ গ্লাস ব্যাকগ্রাউন্ড */
+    background: rgba(255, 255, 255, 0.05) !important; 
+    
+    /* শক্তিশালী ব্লার */
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    
+    /* চিকন ও উজ্জ্বল বর্ডার */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    
+    /* শ্যাডো */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+    
+    /* গোল কোণা */
+    border-radius: 35px !important;
+    
+    /* টেক্সট কালার সাদা */
+    color: #ffffff !important;
+}
+
+/* ৩. পপআপের ভেতরের লেখা ও ইনপুট বক্সের জন্য গ্লোবাল স্টাইল */
+.modal-content h1, .modal-content h2, .modal-content .modal-title, 
+.modal-content p, .modal-content label, .modal-content small,
+.modal-content .dt-value, .modal-content .dt-label,
+.modal-content .room-details-value-final {
+    color: #ffffff !important;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.2);
+}
+
+.modal-content small, .modal-content label, .modal-content .dt-label {
+    opacity: 0.7;
+}
+
+.modal-content .form-input, 
+.modal-content #modalRoomId, 
+.modal-content #modalRoomPass,
+.modal-content .room-details-item-final {
+    background: rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border-radius: 20px !important;
+}
+
+/* ৪. পপআপের পেছনের পর্দা (Overlay) */
+.modal {
+    background: rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(5px) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+}
+
+
+    </style>
+</head>
+<body>
+  
+
+  
+  <!-- পেছনের রঙিন এনিমেটেড ব্লব (Glassmorphism এর জন্য) -->
+    <div class="blob-1" style="position: fixed; width: 500px; height: 500px; background: #4f46e5; filter: blur(120px); border-radius: 50%; z-index: -1; top: -150px; left: -150px; opacity: 0.3;"></div>
+    <div class="blob-2" style="position: fixed; width: 500px; height: 500px; background: #7928ca; filter: blur(120px); border-radius: 50%; z-index: -1; bottom: -100px; right: -150px; opacity: 0.3;"></div>
+    
+
+
+    <div class="firebase-status">
+        <div class="status-dot"></div>
+        <span id="firebaseStatus">Connecting...</span>
+    </div>
+
+    <div class="admin-header fade-in">
+        <h1><i class="fas fa-trophy"></i> ZARA-TOUR-ADMIN</h1>
+        <p>Dev- Mohammad Farhan </p>
+        <p>Must Be Join- https://t.me/nucleartour </p>
+    </div>
+
+    <div class="container">
+        
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active fade-in">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalUsers">0</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card" >
+                    <div class="stat-value" id="activeTournaments">0</div>
+                    <div class="stat-label">Active Tournaments</div>
+                </div>
+                <div class="stat-card" >
+                    <div class="stat-value" id="pendingDeposits">0</div>
+                    <div class="stat-label">Pending Deposits</div>
+                </div>
+                <div class="stat-card" >
+                    <div class="stat-value" id="pendingWithdrawals">0</div>
+                    <div class="stat-label">Pending Withdrawals</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Recent Activities</div>
+                <div id="recentActivities">
+                    <p style="color: var(--text-sub); text-align: center; padding: 20px;">No recent activities</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tournaments Tab -->
+        <div id="tournaments" class="tab-content">
+            <div class="card">
+                <div class="card-title">Create New Tournament</div>
+                <form id="createTournamentForm">
+                    <div class="grid-2">
+                      
+                      <!-- এই কোডটি Tournament Name এর ঠিক পরে যোগ করুন -->
+<div class="form-group">
+    <label class="form-label">Tournament Image URL</label>
+    <input type="url" class="form-input" id="tournamentImageUrl" placeholder="ছবির লিংক এখানে দিন...">
+</div>
+                        <div class="form-group">
+                            <label class="form-label">Tournament Name</label>
+                            <input type="text" class="form-input" id="tournamentName" required>
+                        </div>
+                        
+                        <!-- এই কোডটুকু Create Tournament ফর্মের ভেতরে বসান -->
+<div class="form-group">
+    <label class="form-label">Select Game Category</label>
+    <select class="form-select" id="matchMode" required>
+        <option value="br">Battle Royal</option>
+        <option value="1v1">Custom 1v1</option>
+        <option value="wolf">Lone Wolf</option>
+        <option value="cs">Clash Squad</option>
+        <option value="ludo">Ludo Match</option>
+        <option value="free">Free Match</option>
+    </select>
+</div>
+                        
+                        
+                        <div class="form-group">
+                            <label class="form-label">Match Type</label>
+                            <select class="form-select" id="matchType" required>
+                                <option value="">Select Type</option>
+                                <option value="Solo">Solo</option>
+                                <option value="Duo">Duo</option>
+                                <option value="Squad">Squad</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+    <label class="form-label">Total Prize Pool (৳)</label>
+    <input type="number" class="form-input" id="totalPrizePool" placeholder="উদাহরণ: ৫০০" required>
+</div>
+                        <div class="form-group">
+                            <label class="form-label">Map</label>
+                            <select class="form-select" id="tournamentMap" required>
+                                <option value="">Select Map</option>
+                                <option value="Bermuda">Bermuda</option>
+                                <option value="Kalahari">Kalahari</option>
+                                <option value="Purgatory">Purgatory</option>
+                                <option value="Alpine">Alpine</option>
+                                <option value="Nextera">Nextera</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Entry Fee (৳)</label>
+                            <input type="number" class="form-input" id="entryFee" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Total Slots</label>
+                            <input type="number" class="form-input" id="totalSlots" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Per Kill Prize (৳)</label>
+                            <input type="number" class="form-input" id="perKillPrize" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Entry Date</label>
+                            <input type="datetime-local" class="form-input" id="entryDate" required>
+                        </div>
+                    </div>
+
+                    <div class="prize-distribution">
+                        <h4 style="margin-bottom: 16px; font-weight: 700;">Prize Distribution</h4>
+                        <div class="grid-2">
+                            <div class="prize-item">
+                                <label>1st Prize (৳):</label>
+                                <input type="number" class="form-input" id="prize1st" value="0">
+                            </div>
+                            <div class="prize-item">
+                                <label>2nd Prize (৳):</label>
+                                <input type="number" class="form-input" id="prize2nd" value="0">
+                            </div>
+                            <div class="prize-item">
+                                <label>3rd Prize (৳):</label>
+                                <input type="number" class="form-input" id="prize3rd" value="0">
+                            </div>
+                            <div class="prize-item">
+                                <label>4th Prize (৳):</label>
+                                <input type="number" class="form-input" id="prize4th" value="0">
+                            </div>
+                            <div class="prize-item">
+                                <label>5th Prize (৳):</label>
+                                <input type="number" class="form-input" id="prize5th" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tournament Rules</label>
+                        <textarea class="form-textarea" id="tournamentRules" placeholder="Enter tournament rules and regulations..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create Tournament
+                    </button>
+                </form>
+            </div>
+        </div>
+
+<!-- এটি আপনার নতুন ম্যানেজ পেজ -->
+<div id="matchesList" class="tab-content" style="display: none;">
+    <div class="card glass-card">
+        <div class="card-title"><i class="fas fa-list-ul"></i> Manage All Matches</div>
+        <div id="tournamentsList">
+            <!-- এখানে জাভাস্ক্রিপ্ট দিয়ে টুর্নামেন্ট লোড হবে -->
+            <p style="text-align: center; opacity: 0.5; padding: 20px;">Loading Tournaments...</p>
+        </div>
+    </div>
+</div>
+
+        <!-- Other tabs remain same... -->
+        <!-- Deposits Tab -->
+        <div id="deposits" class="tab-content">
+            <div class="card">
+                <div class="card-title">Pending Deposit Requests</div>
+                <div id="depositRequestsList">
+                    <p style="color: var(--text-sub); text-align: center; padding: 20px;">No pending deposits</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Withdrawals Tab -->
+        <div id="withdrawals" class="tab-content">
+            <div class="card">
+                <div class="card-title">Pending Withdrawal Requests</div>
+                <div id="withdrawalRequestsList">
+                    <p style="color: var(--text-sub); text-align: center; padding: 20px;">No pending withdrawals</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Tab -->
+        <div id="notifications" class="tab-content">
+            <div class="card">
+                <div class="card-title">Send Notification</div>
+                <form id="sendNotificationForm">
+                    <div class="form-group">
+                        <label class="form-label">Notification Title</label>
+                        <input type="text" class="form-input" id="notificationTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notification Message</label>
+                        <textarea class="form-textarea" id="notificationMessage" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send Notification
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        
+        
+        <!-- Settings Tab Content (Updated) -->
+<div id="settings" class="tab-content">
+    <form id="settingsForm">
+        
+        <!-- ১. মেইনটেন্যান্স মোড (সবসময় খোলা থাকবে) -->
+        <div class="setting-group active">
+            <div class="setting-header" onclick="toggleSettingGroup(this)">
+                <span><i class="fas fa-tools"></i> Maintenance Mode</span>
+                <i class="fas fa-chevron-down arrow"></i>
+            </div>
+            <div class="setting-content">
+                <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.1); padding: 15px; border-radius: 15px; border: 1px solid rgba(239, 68, 68, 0.2); margin-top: 10px;">
+                    <div>
+                        <label class="form-label" style="margin-bottom: 0; color: var(--danger); font-weight: 800;">Maintenance Mode</label>
+                        <small style="color: var(--text-sub);">অন করলে ইউজাররা অ্যাপে ঢুকতে পারবে না।</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="maintenanceToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Maintenance Message</label>
+                    <input type="text" class="form-input" id="maintenanceMessage" placeholder="নোটিশ এখানে লিখুন...">
+                </div>
+            </div>
+        </div>
+
+<!-- Admin Interface Settings Accordion -->
+<div class="setting-group">
+    <div class="setting-header" onclick="toggleSettingGroup(this)">
+        <span><i class="fas fa-desktop"></i> Admin Interface Settings</span>
+        <i class="fas fa-chevron-down arrow"></i>
+    </div>
+    <div class="setting-content">
+        <div class="form-group" style="margin-top: 10px;">
+            <label class="form-label">Choose Theme Mode</label>
+            <select class="form-select" id="adminUISelector" onchange="setAdminUI(this.value)">
+                <option value="premium">Premium (Glassmorphism)</option>
+                <option value="normal">Normal (Solid & Super Fast)</option>
+            </select>
+            <small style="color: var(--text-sub); display: block; margin-top: 5px;">যদি অ্যাডমিন প্যানেল ল্যাগ করে, তবে 'Normal' সিলেক্ট করুন। এটি শুধু আপনার জন্য কাজ করবে।</small>
+        </div>
+    </div>
+</div>
+
+<!-- Daily Notice Popup Settings Accordion -->
+<div class="setting-group">
+    <div class="setting-header" onclick="toggleSettingGroup(this)">
+        <span><i class="fas fa-bullhorn"></i> Daily Notice Popup</span>
+        <i class="fas fa-chevron-down arrow"></i>
+    </div>
+    <div class="setting-content">
+        <div class="form-group" style="margin-top: 10px;">
+            <label class="form-label">Enable Daily Popup?</label>
+            <label class="switch">
+                <input type="checkbox" id="dailyPopupEnable">
+                <span class="slider round"></span>
+            </label>
+            <small style="color: var(--text-sub); display: block; margin-top: 5px;">এটি অন করলে ইউজার অ্যাপে প্রতিদিন একবার এই পপআপটি দেখাবে।</small>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Popup Title</label>
+            <input type="text" class="form-input" id="dailyPopupTitle" placeholder="যেমন: জরুরি ঘোষণা">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Popup Subtitle</label>
+            <input type="text" class="form-input" id="dailyPopupSubtitle" placeholder="যেমন: নতুন নিয়মাবলী">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Popup Message</label>
+            <textarea class="form-textarea" id="dailyPopupMessage" placeholder="এখানে আপনার সম্পূর্ণ নোটিশ লিখুন..."></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- App Branding Settings Accordion -->
+<div class="setting-group">
+    <div class="setting-header" onclick="toggleSettingGroup(this)">
+        <span><i class="fas fa-crown"></i> App Branding</span>
+        <i class="fas fa-chevron-down arrow"></i>
+    </div>
+    <div class="setting-content">
+        <div class="form-group" style="margin-top: 10px;">
+            <label class="form-label">App Name</label>
+            <input type="text" class="form-input" id="appName" placeholder="অ্যাপের নতুন নাম দিন...">
+            <small style="color: var(--text-sub); display: block; margin-top: 5px;">এখানে যে নাম দেবেন, সেটি ইউজার অ্যাপে দেখানো হবে।</small>
+        </div>
+    </div>
+</div>
+
+        <!-- ২. হোম স্লাইডার সেটিংস -->
+        <div class="setting-group">
+            <div class="setting-header" onclick="toggleSettingGroup(this)">
+                <span><i class="fas fa-images"></i> Home Slider Images</span>
+                <i class="fas fa-chevron-down arrow"></i>
+            </div>
+            <div class="setting-content">
+                <div class="grid-2" style="margin-top: 10px;">
+                    <div class="form-group"><label class="form-label">Slider 1</label><input type="url" class="form-input" id="bannerUrl1"></div>
+                    <div class="form-group"><label class="form-label">Slider 2</label><input type="url" class="form-input" id="bannerUrl2"></div>
+                    <div class="form-group"><label class="form-label">Slider 3</label><input type="url" class="form-input" id="bannerUrl3"></div>
+                    <div class="form-group"><label class="form-label">Slider 4</label><input type="url" class="form-input" id="bannerUrl4"></div>
+                    <div class="form-group"><label class="form-label">Slider 5</label><input type="url" class="form-input" id="bannerUrl5"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৩. সোশ্যাল ও সাপোর্ট লিংকস -->
+        <div class="setting-group">
+            <div class="setting-header" onclick="toggleSettingGroup(this)">
+                <span><i class="fas fa-link"></i> Social & Support Links</span>
+                <i class="fas fa-chevron-down arrow"></i>
+            </div>
+            <div class="setting-content">
+                <div class="grid-2" style="margin-top: 10px;">
+                    <div class="form-group"><label class="form-label">YouTube Link</label><input type="url" class="form-input" id="youtubeLink"></div>
+                    <div class="form-group"><label class="form-label">WhatsApp Link</label><input type="url" class="form-input" id="whatsappLink"></div>
+                    <div class="form-group"><label class="form-label">Telegram Link</label><input type="url" class="form-input" id="telegramLink"></div>
+                    <div class="form-group"><label class="form-label">Support Phone</label><input type="tel" class="form-input" id="supportContact"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৪. পেমেন্ট সেটিংস -->
+        <div class="setting-group">
+            <div class="setting-header" onclick="toggleSettingGroup(this)">
+                <span><i class="fas fa-wallet"></i> Payment Numbers</span>
+                <i class="fas fa-chevron-down arrow"></i>
+            </div>
+            <div class="setting-content">
+                <div class="grid-2" style="margin-top: 10px;">
+                    <div class="form-group"><label class="form-label">bKash Number</label><input type="tel" class="form-input" id="bkashNumber"></div>
+                    <div class="form-group"><label class="form-label">Nagad Number</label><input type="tel" class="form-input" id="nagadNumber"></div>
+                    <div class="form-group"><label class="form-label">Rocket Number</label><input type="tel" class="form-input" id="rocketNumber"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৫. ডিপোজিট ও উইথড্র লিমিট -->
+        <div class="setting-group">
+            <div class="setting-header" onclick="toggleSettingGroup(this)">
+                <span><i class="fas fa-chart-pie"></i> Transaction Limits</span>
+                <i class="fas fa-chevron-down arrow"></i>
+            </div>
+            <div class="setting-content">
+                <div class="grid-2" style="margin-top: 10px;">
+                    <div class="form-group"><label class="form-label">Min Deposit</label><input type="number" class="form-input" id="minDeposit"></div>
+                    <div class="form-group"><label class="form-label">Max Deposit</label><input type="number" class="form-input" id="maxDeposit"></div>
+                    <div class="form-group"><label class="form-label">Min Withdraw</label><input type="number" class="form-input" id="minWithdrawal"></div>
+                    <div class="form-group"><label class="form-label">Max Withdraw</label><input type="number" class="form-input" id="maxWithdrawal"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <button type="submit" class="btn btn-primary" style="width: 100%; height: 55px; border-radius: 20px; margin-top: 20px; font-size: 16px;">
+            <i class="fas fa-save"></i> Save All Settings
+        </button>
+    </form>
+</div>
+        
+        
+        
+        
+        <!-- Users Tab -->
+<div id="users" class="tab-content">
+    <div class="card">
+        <div class="card-title">Registered Users</div>
+
+        <!-- নতুন: সার্চ বার -->
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label" for="userSearchEmail">Search User by Email</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="email" class="form-input" id="userSearchEmail" placeholder="Enter user's email address" style="flex: 1;">
+                <button type="button" class="btn btn-primary" onclick="searchUserByEmail()" style="width: 120px; font-size: 14px; padding: 10px 15px;">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+
+        <!-- নতুন: সার্চ রেজাল্ট দেখানোর এরিয়া -->
+        <div id="searchResultDisplay" style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px; display: none;">
+            <h3 class="card-title" style="font-size: 18px; margin-bottom: 15px;">Search Result</h3>
+            <div id="searchResultContent">
+                <!-- এখানে সার্চ করা ইউজারের প্রোফাইল দেখানো হবে -->
+            </div>
+        </div>
+
+        <div id="usersList" style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
+            <!-- সকল ইউজারের তালিকা এখানে লোড হয় -->
+            <p style="color: var(--text-sub); text-align: center; padding: 20px;">No users registered yet</p>
+        </div>
+    </div>
+</div>
+        
+
+        
+
+    <!-- Modals -->
+    <div id="tournamentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tournament Details</h2>
+                <button class="modal-close" onclick="closeModal('tournamentModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="tournamentDetails"></div>
+        </div>
+    </div>
+    
+    
+    <div id="selectWinnersModal" class="modal">
+       <div class="modal-content super-glass"> 
+            <div class="modal-header">
+                <h2 class="modal-title">Select Winners & Update Kills</h2>
+                <button class="modal-close" onclick="closeModal('selectWinnersModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="selectWinnersContent"></div>
+        </div>
+    </div>
+
+    <div id="userBalanceModal" class="modal">
+      <div class="modal-content crystal-glass">
+            <div class="modal-header">
+                <h2 class="modal-title">Adjust User Balance</h2>
+                <button class="modal-close" onclick="closeModal('userBalanceModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="adjustBalanceForm">
+                <div class="alert alert-success">
+                    Current Balance: ৳<span id="currentBalance">0</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Action</label>
+                    <select class="form-select" id="balanceAction" required>
+                        <option value="add">Add Money</option>
+                        <option value="deduct">Deduct Money</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount (৳)</label>
+                    <input type="number" class="form-input" id="balanceAmount" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Update Balance
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+      
+        // Firebase Configuration - Permanent
+        const firebaseConfig = {
+            apiKey: "AIzaSyBE_cNtXraGuOVEJ8UELPG3yNJCh4P5aNY",
+            authDomain: "zara-tour-119ec.firebaseapp.com",
+            databaseURL: "https://zara-tour-119ec-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "zara-tour-119ec",
+            storageBucket: "zara-tour-119ec.firebasestorage.app",
+            messagingSenderId: "96951000918",
+            appId: "1:96951000918:web:d22a94a9d7f35f177200f7"
+        };
+
+        let firebaseApp = null;
+        let database = null;
+        let selectedUserId = null;
+        let selectedTournamentId = null;
+        let selectedSearchedUserId = null;
+        
+
+        // Initialize Firebase
+        function initializeFirebase() {
+            try {
+                firebaseApp = firebase.initializeApp(firebaseConfig);
+                database = firebase.database();
+                updateFirebaseStatus('Connected', true);
+                setupRealtimeListeners();
+                return true;
+            } catch (error) {
+                console.error('Firebase initialization error:', error);
+                updateFirebaseStatus('Error', false);
+                return false;
+            }
+        }
+
+        function updateFirebaseStatus(status, isConnected) {
+            const statusEl = document.getElementById('firebaseStatus');
+            const dotEl = document.querySelector('.status-dot');
+            
+            statusEl.textContent = status;
+            dotEl.style.background = isConnected ? 'var(--success)' : 'var(--danger)';
+        }
+
+        function setupRealtimeListeners() {
+            if (!database) return;
+
+            database.ref('tournaments').on('value', () => {
+                loadTournaments();
+            });
+
+            database.ref('users').on('value', () => {
+                loadUsers();
+                loadDashboard();
+            });
+
+            database.ref('deposits').on('value', () => {
+                loadDepositRequests();
+                loadDashboard();
+            });
+
+            database.ref('withdrawals').on('value', () => {
+                loadWithdrawalRequests();
+                loadDashboard();
+            });
+        }
+        
+        // ১. অ্যাডমিন থিম সেট করার ফাংশন
+function setAdminUI(mode) {
+    if (mode === 'premium') {
+        document.body.classList.add('glass-enabled');
+        localStorage.setItem('admin-ui-pref', 'premium');
+    } else {
+        document.body.classList.remove('glass-enabled');
+        localStorage.setItem('admin-ui-pref', 'normal');
+    }
+}
+
+
+// ২. সেভ করা থিম লোড করার ফাংশন
+function applyAdminUI() {
+    const pref = localStorage.getItem('admin-ui-pref');
+    const selector = document.getElementById('adminUISelector');
+    
+    if (pref === 'normal') {
+        document.body.classList.remove('glass-enabled');
+        if(selector) selector.value = 'normal';
+    } else {
+        document.body.classList.add('glass-enabled');
+        if(selector) selector.value = 'premium';
+    }
+}
+
+    // ট্যাব সুইচ ফাংশন (অ্যাডমিনের জন্য)
+function switchAdminDetailTab(tabName) {
+    document.querySelectorAll('.dt-tab').forEach(el => el.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.querySelectorAll('.dt-section').forEach(el => el.style.display = 'none');
+    document.getElementById('admin-dt-' + tabName).style.display = 'block';
+}
+
+// ডিটেইলস পেজ বন্ধ করা
+function closeTournamentDetails() {
+    document.getElementById('tournamentDetailsPage').style.display = 'none';
+}
+
+        function switchTab(tabName) {
+    // ১. সব পেজ হাইড করা
+    const allTabs = document.querySelectorAll('.tab-content');
+    allTabs.forEach(tab => {
+        tab.style.display = 'none';
+        tab.classList.remove('active');
+    });
+
+    // ২. সব বাটন থেকে নীল কালার সরানো
+    const allBtns = document.querySelectorAll('.tab-btn');
+    allBtns.forEach(btn => btn.classList.remove('active'));
+    
+    // অন্য ট্যাবে গেলে সার্চ রেজাল্ট পরিষ্কার করা হবে
+    const searchResultDisplay = document.getElementById('searchResultDisplay');
+    if (searchResultDisplay) {
+        searchResultDisplay.style.display = 'none';
+        document.getElementById('userSearchEmail').value = ''; // সার্চ বারও খালি করা হবে
+    }
+
+    // ৩. বর্তমানে যেটাতে ক্লিক করেছেন সেটি দেখানো
+    const target = document.getElementById(tabName);
+    if (target) {
+        target.style.display = 'block';
+        target.classList.add('active');
+    }
+
+    // ৪. বাটন নীল করা
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+    }
+
+    // ৫. ডাটা লোড কল করা (মেইন ফিক্স)
+    if (tabName === 'dashboard') loadDashboard();
+    if (tabName === 'matchesList') loadTournaments(); // এখানে টুর্নামেন্ট লিস্ট লোড হবে
+    if (tabName === 'deposits') loadDepositRequests();
+    if (tabName === 'withdrawals') loadWithdrawalRequests();
+    if (tabName === 'users') loadUsers();
+    if (tabName === 'settings') loadSettings();
+}
+
+        // Create Tournament
+        document.getElementById('createTournamentForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    if (!database) {
+        alert('Please configure Firebase first!');
+        return;
+    }
+
+    const tournament = {
+        name: document.getElementById('tournamentName').value,
+        imageUrl: document.getElementById('tournamentImageUrl').value, // <-- এই লাইনটি যোগ করুন
+        matchType: document.getElementById('matchType').value,
+        mode: document.getElementById('matchMode').value, 
+        map: document.getElementById('tournamentMap').value,
+        entryFee: parseInt(document.getElementById('entryFee').value),
+        totalSlots: parseInt(document.getElementById('totalSlots').value),
+        totalPrize: parseInt(document.getElementById('totalPrizePool').value), // <-- নতুন যোগ করা হয়েছে
+        filledSlots: 0,
+        perKillPrize: parseInt(document.getElementById('perKillPrize').value),
+        prizes: {
+            first: parseInt(document.getElementById('prize1st').value),
+            second: parseInt(document.getElementById('prize2nd').value),
+            third: parseInt(document.getElementById('prize3rd').value),
+            fourth: parseInt(document.getElementById('prize4th').value),
+            fifth: parseInt(document.getElementById('prize5th').value)
+        },
+        entryDate: document.getElementById('entryDate').value,
+        rules: document.getElementById('tournamentRules').value,
+        roomId: '',
+        roomPass: '',
+        participants: [],
+        winners: [],
+        status: 'upcoming',
+        createdAt: new Date().toISOString()
+    };
+
+    try {
+        await database.ref('tournaments').push(tournament);
+        alert('Tournament created successfully!');
+        this.reset();
+    } catch (error) {
+        alert('Error creating tournament: ' + error.message);
+    }
+});
+
+        async function loadTournaments() {
+    if (!database) return;
+
+    try {
+        const snapshot = await database.ref('tournaments').once('value');
+        const container = document.getElementById('tournamentsList');
+        if(!container) return;
+        
+        container.innerHTML = '<div class="spinner"></div>';
+        const tournaments = [];
+
+        snapshot.forEach((child) => {
+            tournaments.push({ id: child.key, ...child.val() });
+        });
+
+        if (tournaments.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-sub); text-align: center; padding: 20px;">No tournaments created yet</p>';
+            return;
+        }
+
+        // টাইম ফরম্যাট ফাংশন
+        const formatAdminTime = (dateString) => {
+            const date = new Date(dateString);
+            return date.toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
+        };
+
+        container.innerHTML = tournaments.reverse().map(t => {
+            const progressPercent = (t.filledSlots / t.totalSlots) * 100;
+            const imageUrl = t.imageUrl || 'https://i.ibb.co/9v3D2b2/default-game-icon.png';
+            const matchId = t.id.slice(-4).toUpperCase();
+
+            return `
+            <div class="tc-card">
+                <!-- Header -->
+                <div class="tc-header">
+                    <img src="${imageUrl}" class="tc-image" alt="Match">
+                    <div class="tc-title-section">
+                        <div class="tc-title">${t.name}</div>
+                        <div class="tc-time"><i class="far fa-clock"></i> ${formatAdminTime(t.entryDate)}</div>
+                    </div>
+                    <div class="tc-match-id">#${matchId}</div>
+                    <span class="badge" style="background: ${t.status === 'upcoming' ? '#f59e0b' : t.status === 'live' ? '#10b981' : '#ef4444'}; color: white; font-size: 10px; padding: 4px 8px; border-radius: 6px;">${t.status.toUpperCase()}</span>
+                </div>
+
+                <!-- Tags -->
+                <div class="tc-tags">
+                    <div class="tc-tag"><i class="fas fa-map"></i> ${t.map}</div>
+                    <div class="tc-tag" style="background: #d97706;"><i class="fas fa-user"></i> ${t.matchType}</div>
+                    <div class="tc-tag" style="background: #db2777;"><i class="fas fa-coins"></i> ${t.entryFee} TK</div>
+                </div>
+
+                <!-- Prize Info -->
+                <div class="tc-prize-info">
+                    <div>
+                        <div class="tc-prize-label">TOTAL PRIZE</div>
+                        <div class="tc-prize-value">৳${t.totalPrize || 0}</div>
+                    </div>
+                    <div style="width: 1px; height: 30px; background: var(--glass-border);"></div>
+                    <div>
+                        <div class="tc-prize-label">PER KILL</div>
+                        <div class="tc-prize-value">৳${t.perKillPrize}</div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="tc-progress-bar-container">
+                    <div class="tc-progress-bar-fill" style="width: ${progressPercent}%;"></div>
+                    <span class="tc-progress-label">${t.filledSlots}/${t.totalSlots}</span>
+                </div>
+
+                <!-- Admin Actions (Buttons) -->
+                <div class="tc-actions">
+                    <div class="tc-btn-admin" onclick="updateRoomDetails('${t.id}')">
+                        <i class="fas fa-door-open" style="color: #6366f1;"></i> Room
+                    </div>
+                    <div class="tc-btn-admin" onclick="openSelectWinnersModal('${t.id}')">
+                        <i class="fas fa-trophy" style="color: #fbbf24;"></i> Winners
+                    </div>
+                    <div class="tc-btn-admin" onclick="deleteTournament('${t.id}')" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
+                        <i class="fas fa-trash"></i> Delete
+                    </div>
+                    <div class="tc-btn-admin" onclick="viewTournamentDetails('${t.id}')">
+                        <i class="fas fa-eye"></i> View Players
+                    </div>
+                </div>
+                
+                <!-- Bottom Full Button -->
+                <div class="tc-status-btn" onclick="viewTournamentDetails('${t.id}')">
+                    Full Match Details
+                </div>
+            </div>
+            `;
+        }).join('');
+    } catch (error) {
+        console.error('Error loading tournaments:', error);
+    }
+}
+
+        async function viewTournamentDetails(tournamentId) {
+    if (!database) return;
+    
+    // ১. ডিটেইলস পেজ দেখানো এবং স্পিনার চালু করা
+    const detailsPage = document.getElementById('tournamentDetailsPage');
+    const contentArea = document.getElementById('tournamentDetailsContent');
+    if (detailsPage) detailsPage.style.display = 'block';
+    if (contentArea) contentArea.innerHTML = '<div class="spinner"></div>';
+
+    try {
+        const snapshot = await database.ref('tournaments/' + tournamentId).once('value');
+        const t = snapshot.val();
+        if (!t) {
+            contentArea.innerHTML = '<p style="text-align:center; color:white;">Tournament data not found!</p>';
+            return;
+        }
+
+        // ২. তারিখ এবং সময় ফরম্যাট করা (এগুলো আগে ডিফাইন করতে হবে)
+        const dateObj = new Date(t.entryDate);
+        const dateStr = dateObj.toLocaleDateString('en-GB'); // যেমন: 07/02/2026
+        const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }); // যেমন: 11:41 PM
+
+        // ৩. টাইটেল সেট করা
+        const titleEl = document.getElementById('detailsPageTitle');
+        if (titleEl) titleEl.textContent = t.name;
+
+        // ৪. মেইন HTML স্ট্রাকচার (আপনার পছন্দের ইমোজি সহ)
+        let html = `
+            <div class="dt-tabs">
+                <div class="dt-tab active" onclick="switchAdminDetailTab('details')">Details</div>
+                <div class="dt-tab" onclick="switchAdminDetailTab('players')">Players</div>
+                <div class="dt-tab" onclick="switchAdminDetailTab('winners')">Winners</div>
+            </div>
+
+            <!-- TAB 1: DETAILS -->
+            <div id="admin-dt-details" class="dt-section active">
+                <div class="dt-card">
+                    <div class="dt-grid">
+                        <div>
+                            <div class="dt-label">Category</div>
+                            <div class="dt-value"><i class="fas fa-fire" style="color:#fbbf24;"></i> ${(t.mode || 'br').toUpperCase()}</div>
+                        </div>
+                        <div>
+                            <div class="dt-label">Game Map</div>
+                            <div class="dt-value"><i class="fas fa-map" style="color:#f59e0b;"></i> ${t.map || 'N/A'}</div>
+                        </div>
+                        <div>
+                            <div class="dt-label">Entry Fee</div>
+                            <div class="dt-value"><i class="fas fa-ticket-alt" style="color:#10b981;"></i> ৳${t.entryFee || 0}</div>
+                        </div>
+                        <div>
+                            <div class="dt-label">Per Kill</div>
+                            <div class="dt-value"><i class="fas fa-skull" style="color:#ef4444;"></i> ৳${t.perKillPrize || 0}</div>
+                        </div>
+                        <div>
+                            <div class="dt-label">Match Date</div>
+                            <div class="dt-value"><i class="far fa-calendar-alt" style="color:#3b82f6;"></i> ${dateStr}</div>
+                        </div>
+                        <div>
+                            <div class="dt-label">Match Time</div>
+                            <div class="dt-value"><i class="far fa-clock" style="color:#6366f1;"></i> ${timeStr}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- রুম আইডি ও পাসওয়ার্ড সেকশন -->
+                <div class="dt-card">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                        <div>
+                            <div class="dt-label">Room ID</div>
+                            <div class="dt-value" style="font-size:18px;"><i class="fas fa-door-open" style="color:#818cf8;"></i> ${t.roomId || '---'}</div>
+                        </div>
+                        <div>
+                            <div class="dt-label">Room Pass</div>
+                            <div class="dt-value" style="font-size:18px;"><i class="fas fa-lock" style="color:#f472b6;"></i> ${t.roomPass || '---'}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: PLAYERS -->
+            <div id="admin-dt-players" class="dt-section" style="display:none;">
+                <div class="dt-card">
+                    <h4 style="margin-bottom:15px; font-size:14px; color:white;">Joined Players (${t.participants ? t.participants.length : 0})</h4>
+                    ${t.participants && t.participants.length > 0 ? t.participants.map(p => `
+                        <div class="dt-list-item">
+                            <div>
+                                <div style="font-weight:700;">${p.gameName}</div>
+                                <small style="opacity:0.6;">Acc: ${p.userName}</small>
+                            </div>
+                            <div style="font-size:11px; opacity:0.8;">UID: ${p.gameUid}</div>
+                        </div>
+                    `).join('') : '<p style="text-align:center; opacity:0.5;">No players joined yet</p>'}
+                </div>
+            </div>
+
+            <!-- TAB 3: WINNERS -->
+            <div id="admin-dt-winners" class="dt-section" style="display:none;">
+                <div class="dt-card">
+                    <h4 style="margin-bottom:15px; font-size:14px; color:white;">Winners List</h4>
+                    ${t.winners && t.winners.length > 0 ? t.winners.map(w => `
+                        <div class="dt-list-item">
+                            <div style="font-weight:bold;">#${w.position} ${w.gameName}</div>
+                            <div style="color:var(--success); font-weight:800;">৳${w.prize}</div>
+                        </div>
+                    `).join('') : '<p style="text-align:center; opacity:0.5;">Match not ended yet</p>'}
+                </div>
+            </div>
+        `;
+        
+        // ৫. তৈরি করা HTML কন্টেন্ট এরিয়ায় বসানো
+        contentArea.innerHTML = html;
+
+    } catch (error) {
+        console.error("Details Load Error:", error);
+        contentArea.innerHTML = '<p style="text-align:center; color:#ef4444;">Something went wrong!</p>';
+    }
+}
+
+        
+        async function updateRoomDetails(tournamentId) {
+            const roomId = prompt('Enter Room ID:');
+            if (!roomId) return;
+            
+            const roomPass = prompt('Enter Room Password:');
+            if (!roomPass) return;
+            
+            if (!database) return;
+
+            try {
+                await database.ref('tournaments/' + tournamentId).update({
+                    roomId: roomId,
+                    roomPass: roomPass,
+                    status: 'live'
+                });
+                alert('Room details updated! Tournament is now LIVE.');
+            } catch (error) {
+                alert('Error updating room details: ' + error.message);
+            }
+        }
+
+        async function openSelectWinnersModal(tournamentId) {
+    if (!database) return;
+
+    try {
+        const snapshot = await database.ref('tournaments/' + tournamentId).once('value');
+        const tournament = snapshot.val();
+
+        if (!tournament || !tournament.participants || tournament.participants.length === 0) {
+            alert('No participants in this tournament!');
+            return;
+        }
+
+        selectedTournamentId = tournamentId;
+        const content = document.getElementById('selectWinnersContent');
+
+        content.innerHTML = `
+        <form id="updateWinnersForm">
+            <div class="alert alert-success">
+                Select top 5 winners and update their kill counts
+            </div>
+            ${tournament.participants.map((p, idx) => `
+            <div class="winner-select-item">
+                <div class="winner-select-header">
+                    <label>
+                        <input type="checkbox" name="winner" value="${idx}" style="margin-right: 8px;">
+                        <!-- এখানে পরিবর্তন করা হয়েছে: userName এর বদলে gameName -->
+                        <strong>${p.gameName}</strong> 
+                        <small style="color: var(--text-sub); font-weight: normal;">(Acc: ${p.userName})</small>
+                    </label>
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 8px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 13px; color: var(--text-sub);">Position:</label>
+                        <select class="form-select" name="position_${idx}" style="padding: 8px;">
+                            <option value="">-</option>
+                            <option value="1">1st</option>
+                            <option value="2">2nd</option>
+                            <option value="3">3rd</option>
+                            <option value="4">4th</option>
+                            <option value="5">5th</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 13px; color: var(--text-sub);">Kills:</label>
+                        <input type="number" class="form-input" name="kills_${idx}" value="0" style="padding: 8px;">
+                    </div>
+                </div>
+            </div>
+            `).join('')}
+            <button type="submit" class="btn btn-primary" style="margin-top: 16px; width: 100%;">
+                <i class="fas fa-trophy"></i> Update Winners & End Tournament
+            </button>
+        </form>
+        `;
+
+        document.getElementById('selectWinnersModal').classList.add('active');
+
+        document.getElementById('updateWinnersForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await updateTournamentWinners(tournamentId, tournament);
+        });
+    } catch (error) {
+        console.error('Error opening winners modal:', error);
+    }
+}
+
+        async function updateTournamentWinners(tournamentId, tournament) {
+            if (!database) return;
+
+            try {
+                const form = document.getElementById('updateWinnersForm');
+                const formData = new FormData(form);
+                const winners = [];
+                const updatedParticipants = [...tournament.participants];
+
+                // Process each participant
+                tournament.participants.forEach((p, idx) => {
+                    const position = formData.get(`position_${idx}`);
+                    const kills = parseInt(formData.get(`kills_${idx}`)) || 0;
+                    
+                    updatedParticipants[idx].kills = kills;
+
+                    if (position) {
+                        const positionNum = parseInt(position);
+                        let prize = 0;
+
+                        switch(positionNum) {
+                            case 1: prize = tournament.prizes?.first || 0; break;
+                            case 2: prize = tournament.prizes?.second || 0; break;
+                            case 3: prize = tournament.prizes?.third || 0; break;
+                            case 4: prize = tournament.prizes?.fourth || 0; break;
+                            case 5: prize = tournament.prizes?.fifth || 0; break;
+                        }
+
+                        const killPrize = kills * (tournament.perKillPrize || 0);
+                        const totalPrize = prize + killPrize;
+
+                        winners.push({
+                            position: positionNum,
+                            userId: p.userId,
+                            userName: p.userName,
+                            gameUid: p.gameUid,
+                            gameName: p.gameName,
+                            kills: kills,
+                            positionPrize: prize,
+                            killPrize: killPrize,
+                            prize: totalPrize
+                        });
+
+                        // Update user balance and winnings
+                        database.ref('users/' + p.userId).once('value').then((userSnap) => {
+                            const user = userSnap.val();
+                            if (user) {
+                                database.ref('users/' + p.userId).update({
+                                    balance: (user.balance || 0) + totalPrize,
+                                    winnings: (user.winnings || 0) + totalPrize,
+                                    totalKills: (user.totalKills || 0) + kills
+                                });
+                            }
+                        });
+                    }
+                });
+
+                // Sort winners by position
+                winners.sort((a, b) => a.position - b.position);
+
+                // Update tournament
+                await database.ref('tournaments/' + tournamentId).update({
+                    participants: updatedParticipants,
+                    winners: winners,
+                    status: 'ended'
+                });
+
+                alert('Tournament updated successfully! Winners have been paid.');
+                closeModal('selectWinnersModal');
+            } catch (error) {
+                alert('Error updating tournament: ' + error.message);
+            }
+        }
+
+        async function deleteTournament(tournamentId) {
+            if (!confirm('Are you sure you want to delete this tournament?')) return;
+            
+            if (!database) return;
+
+            try {
+                await database.ref('tournaments/' + tournamentId).remove();
+                alert('Tournament deleted successfully!');
+            } catch (error) {
+                alert('Error deleting tournament: ' + error.message);
+            }
+        }
+
+        // Load Users
+        async function loadUsers() {
+            if (!database) return;
+
+            try {
+                const snapshot = await database.ref('users').once('value');
+                const users = [];
+                
+                snapshot.forEach((child) => {
+                    users.push({
+                        id: child.key,
+                        ...child.val()
+                    });
+                });
+
+                const container = document.getElementById('usersList');
+                
+                if (users.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-sub); text-align: center; padding: 20px;">No users registered yet</p>';
+                    return;
+                }
+                
+                container.innerHTML = users.map(u => `
+                    <div class="user-item ${u.blocked ? 'blocked' : ''}">
+                        <div class="participant-info">
+                            <span class="participant-name">${u.name} ${u.blocked ? '<span class="badge badge-danger">BLOCKED</span>' : ''}</span>
+                            <span class="participant-details">Email: ${u.email} | Phone: ${u.phone} | Balance: ৳${u.balance || 0} | Kills: ${u.totalKills || 0}</span>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn btn-primary btn-sm" onclick="openBalanceModal('${u.id}', ${u.balance || 0})">
+                                <i class="fas fa-wallet"></i> Balance
+                            </button>
+                            <button class="btn ${u.blocked ? 'btn-success' : 'btn-danger'} btn-sm" onclick="toggleBlockUser('${u.id}', ${!!u.blocked})">
+                                <i class="fas fa-${u.blocked ? 'unlock' : 'ban'}"></i> ${u.blocked ? 'Unblock' : 'Block'}
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        function openBalanceModal(userId, currentBalance) {
+            selectedUserId = userId;
+            document.getElementById('currentBalance').textContent = currentBalance;
+            document.getElementById('userBalanceModal').classList.add('active');
+        }
+
+        document.getElementById('adjustBalanceForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!database || !selectedUserId) return;
+
+            const action = document.getElementById('balanceAction').value;
+            const amount = parseInt(document.getElementById('balanceAmount').value);
+
+            try {
+                const snapshot = await database.ref('users/' + selectedUserId).once('value');
+                const user = snapshot.val();
+                
+                if (!user) return;
+
+                let newBalance = user.balance || 0;
+                if (action === 'add') {
+                    newBalance += amount;
+                } else {
+                    newBalance -= amount;
+                }
+
+                await database.ref('users/' + selectedUserId).update({
+                    balance: Math.max(0, newBalance)
+                });
+
+                alert('Balance updated successfully!');
+                closeModal('userBalanceModal');
+                this.reset();
+            } catch (error) {
+                alert('Error updating balance: ' + error.message);
+            }
+        });
+
+
+// ইমেইল দিয়ে ইউজার সার্চ করার ফাংশন
+async function searchUserByEmail() {
+    const searchEmail = document.getElementById('userSearchEmail').value.trim();
+    const searchResultDisplay = document.getElementById('searchResultDisplay');
+    const searchResultContent = document.getElementById('searchResultContent');
+
+    searchResultDisplay.style.display = 'block'; // সার্চ রেজাল্ট সেকশনটি দেখানো হবে
+    searchResultContent.innerHTML = '<div class="spinner"></div>'; // লোডিং স্পিনার দেখানো হবে
+
+    if (!searchEmail) {
+        searchResultContent.innerHTML = '<p class="alert alert-info" style="color: var(--text-sub); border-color: var(--border);">Please enter an email address to search.</p>';
+        return;
+    }
+
+    if (!database) {
+        searchResultContent.innerHTML = '<p class="alert alert-danger">Firebase not connected!</p>';
+        return;
+    }
+
+    try {
+        // Firebase থেকে ইমেইল দিয়ে ইউজার খোঁজা
+        const snapshot = await database.ref('users')
+                                      .orderByChild('email')
+                                      .equalTo(searchEmail)
+                                      .once('value'); // একবার ডেটা আনা হবে
+
+        if (snapshot.exists()) {
+            let foundUser = null;
+            let foundUserId = null;
+            snapshot.forEach(child => {
+                foundUserId = child.key;
+                foundUser = { id: child.key, ...child.val() };
+            });
+
+            if (foundUser) {
+                displaySearchResult(foundUser);
+                selectedSearchedUserId = foundUserId; // Modal অ্যাকশনের জন্য আইডি সংরক্ষণ করা
+            } else {
+                searchResultContent.innerHTML = '<p class="alert alert-warning" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">User with this email not found.</p>';
+            }
+        } else {
+            searchResultContent.innerHTML = '<p class="alert alert-warning" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">User with this email not found.</p>';
+        }
+
+    } catch (error) {
+        console.error("Error searching user:", error);
+        searchResultContent.innerHTML = `<p class="alert alert-danger">Error searching user: ${error.message}</p>`;
+    }
+}
+
+// সার্চ করা ইউজারের প্রোফাইল দেখানোর ফাংশন
+function displaySearchResult(user) {
+    const searchResultContent = document.getElementById('searchResultContent');
+    searchResultContent.innerHTML = `
+        <div class="user-item ${user.blocked ? 'blocked' : ''}" id="searchedUser-${user.id}">
+            <div class="participant-info">
+                <span class="participant-name">${user.name} ${user.blocked ? '<span class="badge badge-danger">BLOCKED</span>' : ''}</span>
+                <span class="participant-details">
+                    Email: ${user.email} | Phone: ${user.phone || 'N/A'} | Balance: ৳${user.balance || 0} | Kills: ${user.totalKills || 0}
+                    <br>
+                    Game Name: ${user.gameName || 'N/A'} | Winnings: ৳${user.winnings || 0}
+                </span>
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-warning btn-sm" onclick="openEditUserModal('${user.id}')">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="openBalanceModal('${user.id}', ${user.balance || 0})">
+                    <i class="fas fa-wallet"></i> Balance
+                </button>
+                <button class="btn ${user.blocked ? 'btn-success' : 'btn-danger'} btn-sm" onclick="toggleBlockUser('${user.id}', ${!!user.blocked})">
+                    <i class="fas fa-${user.blocked ? 'unlock' : 'ban'}"></i> ${user.blocked ? 'Unblock' : 'Block'}
+                </button>
+            </div>
+        </div>
+    `;
+
+    // এই নির্দিষ্ট ইউজারের ডেটা লাইভ আপডেট রাখার জন্য Realtime Listener
+    database.ref('users/' + user.id).on('value', (snapshot) => {
+        if (snapshot.exists()) {
+            const updatedUser = { id: snapshot.key, ...snapshot.val() };
+            const userItemDiv = document.getElementById(`searchedUser-${updatedUser.id}`);
+            if (userItemDiv) {
+                // শুধু এই নির্দিষ্ট ইউজারের ডিসপ্লে আপডেট করা হবে
+                userItemDiv.outerHTML = `
+                    <div class="user-item ${updatedUser.blocked ? 'blocked' : ''}" id="searchedUser-${updatedUser.id}">
+                        <div class="participant-info">
+                            <span class="participant-name">${updatedUser.name} ${updatedUser.blocked ? '<span class="badge badge-danger">BLOCKED</span>' : ''}</span>
+                            <span class="participant-details">
+                                Email: ${updatedUser.email} | Phone: ${updatedUser.phone || 'N/A'} | Balance: ৳${updatedUser.balance || 0} | Kills: ${updatedUser.totalKills || 0}
+                                <br>
+                                Game Name: ${updatedUser.gameName || 'N/A'} | Winnings: ৳${updatedUser.winnings || 0}
+                            </span>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn btn-warning btn-sm" onclick="openEditUserModal('${updatedUser.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="openBalanceModal('${updatedUser.id}', ${updatedUser.balance || 0})">
+                                <i class="fas fa-wallet"></i> Balance
+                            </button>
+                            <button class="btn ${updatedUser.blocked ? 'btn-success' : 'btn-danger'} btn-sm" onclick="toggleBlockUser('${updatedUser.id}', ${!!updatedUser.blocked})">
+                                <i class="fas fa-${updatedUser.blocked ? 'unlock' : 'ban'}"></i> ${updatedUser.blocked ? 'Unblock' : 'Block'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        } else {
+             // ইউজার ডিলিট করা হলে সার্চ রেজাল্ট থেকে সরিয়ে দেওয়া হবে
+             const userItemDiv = document.getElementById(`searchedUser-${user.id}`);
+             if (userItemDiv) userItemDiv.remove();
+             searchResultContent.innerHTML = '<p class="alert alert-info" style="color: var(--text-sub); border-color: var(--border);">Searched user no longer exists.</p>';
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+        async function toggleBlockUser(userId, isBlocked) {
+            if (!database) return;
+
+            const action = isBlocked ? 'unblock' : 'block';
+            if (!confirm(`Are you sure you want to ${action} this user?`)) return;
+
+            try {
+                await database.ref('users/' + userId).update({
+                    blocked: !isBlocked
+                });
+                alert(`User ${action}ed successfully!`);
+            } catch (error) {
+                alert(`Error ${action}ing user: ` + error.message);
+            }
+        }
+
+        // Load Deposit Requests
+        async function loadDepositRequests() {
+            if (!database) return;
+
+            try {
+                const snapshot = await database.ref('deposits').once('value');
+                const deposits = [];
+                
+                snapshot.forEach((child) => {
+                    const deposit = child.val();
+                    if (deposit.status === 'pending') {
+                        deposits.push({
+                            id: child.key,
+                            ...deposit
+                        });
+                    }
+                });
+
+                const container = document.getElementById('depositRequestsList');
+                
+                if (deposits.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-sub); text-align: center; padding: 20px;">No pending deposits</p>';
+                    return;
+                }
+                
+                container.innerHTML = deposits.map(d => `
+                    <div class="request-item">
+                        <div class="request-header">
+                            <span class="request-user">${d.userName}</span>
+                            <span class="request-amount">৳${d.amount}</span>
+                        </div>
+                        <div class="request-info">
+                            <div><strong>Method:</strong> ${d.method}</div>
+                            <div><strong>From Number:</strong> ${d.fromNumber}</div>
+                            <div><strong>Transaction ID:</strong> ${d.transactionId}</div>
+                            <div><strong>Date:</strong> ${new Date(d.date).toLocaleString()}</div>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-top: 12px;">
+                            <button class="btn btn-success btn-sm" onclick="approveDeposit('${d.id}', '${d.userEmail}', ${d.amount})">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="rejectDeposit('${d.id}')">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading deposits:', error);
+            }
+        }
+
+        async function approveDeposit(depositId, userEmail, amount) {
+            if (!database) return;
+
+            try {
+                await database.ref('deposits/' + depositId).update({
+                    status: 'approved'
+                });
+
+                const usersSnapshot = await database.ref('users').once('value');
+                let userId = null;
+                
+                usersSnapshot.forEach((child) => {
+                    if (child.val().email === userEmail) {
+                        userId = child.key;
+                    }
+                });
+
+                if (userId) {
+                    const userSnapshot = await database.ref('users/' + userId).once('value');
+                    const currentBalance = userSnapshot.val().balance || 0;
+                    
+                    await database.ref('users/' + userId).update({
+                        balance: currentBalance + amount
+                    });
+                }
+
+                alert('Deposit approved! User balance updated.');
+            } catch (error) {
+                alert('Error approving deposit: ' + error.message);
+            }
+        }
+
+        async function rejectDeposit(depositId) {
+            if (!confirm('Are you sure you want to reject this deposit?')) return;
+            
+            if (!database) return;
+
+            try {
+                await database.ref('deposits/' + depositId).update({
+                    status: 'rejected'
+                });
+                alert('Deposit rejected.');
+            } catch (error) {
+                alert('Error rejecting deposit: ' + error.message);
+            }
+        }
+
+        // Load Withdrawal Requests
+        async function loadWithdrawalRequests() {
+            if (!database) return;
+
+            try {
+                const snapshot = await database.ref('withdrawals').once('value');
+                const withdrawals = [];
+                
+                snapshot.forEach((child) => {
+                    const withdrawal = child.val();
+                    if (withdrawal.status === 'pending') {
+                        withdrawals.push({
+                            id: child.key,
+                            ...withdrawal
+                        });
+                    }
+                });
+
+                const container = document.getElementById('withdrawalRequestsList');
+                
+                if (withdrawals.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-sub); text-align: center; padding: 20px;">No pending withdrawals</p>';
+                    return;
+                }
+                
+                container.innerHTML = withdrawals.map(w => `
+                    <div class="request-item">
+                        <div class="request-header">
+                            <span class="request-user">${w.userName}</span>
+                            <span class="request-amount">৳${w.amount}</span>
+                        </div>
+                        <div class="request-info">
+                            <div><strong>Method:</strong> ${w.method}</div>
+                            <div><strong>Account Number:</strong> ${w.accountNumber}</div>
+                            <div><strong>Date:</strong> ${new Date(w.date).toLocaleString()}</div>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-top: 12px;">
+                            <button class="btn btn-success btn-sm" onclick="approveWithdrawal('${w.id}')">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="rejectWithdrawal('${w.id}', '${w.userEmail}', ${w.amount})">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading withdrawals:', error);
+            }
+        }
+
+        async function approveWithdrawal(withdrawalId) {
+            if (!database) return;
+
+            try {
+                await database.ref('withdrawals/' + withdrawalId).update({
+                    status: 'approved'
+                });
+                alert('Withdrawal approved!');
+            } catch (error) {
+                alert('Error approving withdrawal: ' + error.message);
+            }
+        }
+
+        async function rejectWithdrawal(withdrawalId, userEmail, amount) {
+            if (!confirm('Are you sure you want to reject this withdrawal?')) return;
+            
+            if (!database) return;
+
+            try {
+                await database.ref('withdrawals/' + withdrawalId).update({
+                    status: 'rejected'
+                });
+
+                const usersSnapshot = await database.ref('users').once('value');
+                let userId = null;
+                
+                usersSnapshot.forEach((child) => {
+                    if (child.val().email === userEmail) {
+                        userId = child.key;
+                    }
+                });
+
+                if (userId) {
+                    const userSnapshot = await database.ref('users/' + userId).once('value');
+                    const currentBalance = userSnapshot.val().balance || 0;
+                    
+                    await database.ref('users/' + userId).update({
+                        balance: currentBalance + amount
+                    });
+                }
+
+                alert('Withdrawal rejected. Amount refunded to user.');
+            } catch (error) {
+                alert('Error rejecting withdrawal: ' + error.message);
+            }
+        }
+
+        document.getElementById('sendNotificationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!database) {
+                alert('Please configure Firebase first!');
+                return;
+            }
+
+            const notification = {
+                title: document.getElementById('notificationTitle').value,
+                message: document.getElementById('notificationMessage').value,
+                date: new Date().toISOString()
+            };
+            
+            try {
+                await database.ref('notifications').push(notification);
+                alert('Notification sent to all users!');
+                this.reset();
+            } catch (error) {
+                alert('Error sending notification: ' + error.message);
+            }
+        });
+
+        // ১. ডাটাবেস থেকে সেটিংস লোড করে বক্সে বসানো
+async function loadSettings() {
+    if (!database) return;
+
+    try {
+        const snapshot = await database.ref('settings').once('value');
+        const settings = snapshot.val() || {};
+
+        // মেইনটেন্যান্স মোড (টগল এবং মেসেজ)
+        document.getElementById('maintenanceToggle').checked = settings.isMaintenance || false;
+        document.getElementById('maintenanceMessage').value = settings.maintenanceMessage || '';
+
+        // স্লাইডার ইমেজ লিংক
+        document.getElementById('bannerUrl1').value = settings.bannerUrl1 || '';
+        document.getElementById('bannerUrl2').value = settings.bannerUrl2 || '';
+        document.getElementById('bannerUrl3').value = settings.bannerUrl3 || '';
+        document.getElementById('bannerUrl4').value = settings.bannerUrl4 || '';
+        document.getElementById('bannerUrl5').value = settings.bannerUrl5 || '';
+
+        // সোশ্যাল এবং সাপোর্ট লিংক
+        document.getElementById('youtubeLink').value = settings.youtubeLink || '';
+        document.getElementById('whatsappLink').value = settings.whatsappLink || '';
+        document.getElementById('telegramLink').value = settings.telegramLink || '';
+        document.getElementById('supportContact').value = settings.supportContact || '';
+
+        // পেমেন্ট নাম্বার
+        document.getElementById('bkashNumber').value = settings.bkashNumber || '';
+        document.getElementById('nagadNumber').value = settings.nagadNumber || '';
+        document.getElementById('rocketNumber').value = settings.rocketNumber || '';
+        document.getElementById('appName').value = settings.appName || 'ZARA TOUR';
+        document.getElementById('dailyPopupEnable').checked = settings.dailyPopupEnable || false;
+        document.getElementById('dailyPopupTitle').value = settings.dailyPopupTitle || '';
+        document.getElementById('dailyPopupSubtitle').value = settings.dailyPopupSubtitle || '';
+        document.getElementById('dailyPopupMessage').value = settings.dailyPopupMessage || '';
+
+        // লিমিট সেটিংস
+        document.getElementById('minDeposit').value = settings.minDeposit || 100;
+        document.getElementById('maxDeposit').value = settings.maxDeposit || 50000;
+        document.getElementById('minWithdrawal').value = settings.minWithdrawal || 200;
+        document.getElementById('maxWithdrawal').value = settings.maxWithdrawal || 50000;
+
+    } catch (error) {
+        console.error('Error loading settings:', error);
+    }
+}
+
+
+
+// ২. সেটিংস সেভ করার লজিক (বাটনে ক্লিক করলে যা হবে)
+document.getElementById('settingsForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    if (!database) {
+        alert('Firebase not connected!');
+        return;
+    }
+
+    const settings = {
+        // মেইনটেন্যান্স ডাটা
+        isMaintenance: document.getElementById('maintenanceToggle').checked,
+        maintenanceMessage: document.getElementById('maintenanceMessage').value,
+
+        // স্লাইডার ডাটা
+        bannerUrl1: document.getElementById('bannerUrl1').value,
+        bannerUrl2: document.getElementById('bannerUrl2').value,
+        bannerUrl3: document.getElementById('bannerUrl3').value,
+        bannerUrl4: document.getElementById('bannerUrl4').value,
+        bannerUrl5: document.getElementById('bannerUrl5').value,
+
+        // সোশ্যাল ডাটা
+        youtubeLink: document.getElementById('youtubeLink').value,
+        whatsappLink: document.getElementById('whatsappLink').value,
+        telegramLink: document.getElementById('telegramLink').value,
+        supportContact: document.getElementById('supportContact').value,
+
+        // পেমেন্ট ডাটা
+        bkashNumber: document.getElementById('bkashNumber').value,
+        nagadNumber: document.getElementById('nagadNumber').value,
+        rocketNumber: document.getElementById('rocketNumber').value,
+        appName: document.getElementById('appName').value,
+        dailyPopupEnable: document.getElementById('dailyPopupEnable').checked,
+        dailyPopupTitle: document.getElementById('dailyPopupTitle').value,
+        dailyPopupSubtitle: document.getElementById('dailyPopupSubtitle').value,
+        dailyPopupMessage: document.getElementById('dailyPopupMessage').value,
+
+        // লিমিট ডাটা
+        minDeposit: parseInt(document.getElementById('minDeposit').value),
+        maxDeposit: parseInt(document.getElementById('maxDeposit').value),
+        minWithdrawal: parseInt(document.getElementById('minWithdrawal').value),
+        maxWithdrawal: parseInt(document.getElementById('maxWithdrawal').value)
+    };
+
+    try {
+        await database.ref('settings').set(settings);
+        alert('Settings saved successfully!');
+        loadSettings(); // ডাটা আবার লোড করে নিশ্চিত করা
+    } catch (error) {
+        alert('Error saving settings: ' + error.message);
+    }
+});
+
+
+
+        async function loadDashboard() {
+            if (!database) return;
+
+            try {
+                const [usersSnap, tournamentsSnap, depositsSnap, withdrawalsSnap] = await Promise.all([
+                    database.ref('users').once('value'),
+                    database.ref('tournaments').once('value'),
+                    database.ref('deposits').once('value'),
+                    database.ref('withdrawals').once('value')
+                ]);
+
+                const usersCount = usersSnap.numChildren();
+                let activeTournamentsCount = 0;
+                let pendingDepositsCount = 0;
+                let pendingWithdrawalsCount = 0;
+
+                tournamentsSnap.forEach((child) => {
+                    const t = child.val();
+                    if (t.status === 'live' || t.status === 'upcoming') {
+                        activeTournamentsCount++;
+                    }
+                });
+
+                depositsSnap.forEach((child) => {
+                    if (child.val().status === 'pending') {
+                        pendingDepositsCount++;
+                    }
+                });
+
+                withdrawalsSnap.forEach((child) => {
+                    if (child.val().status === 'pending') {
+                        pendingWithdrawalsCount++;
+                    }
+                });
+
+                document.getElementById('totalUsers').textContent = usersCount;
+                document.getElementById('activeTournaments').textContent = activeTournamentsCount;
+                document.getElementById('pendingDeposits').textContent = pendingDepositsCount;
+                document.getElementById('pendingWithdrawals').textContent = pendingWithdrawalsCount;
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+        
+        
+        function toggleSettingGroup(header) {
+    const group = header.parentElement;
+    
+    // আপনি চাইলে একটি খুললে বাকিগুলো বন্ধ হয়ে যাবে এমন সিস্টেম করতে পারেন (অপশনাল)
+    // document.querySelectorAll('.setting-group').forEach(el => el.classList.remove('active'));
+
+    group.classList.toggle('active');
+}
+        
+        
+ 
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        window.onload = function() {
+            const isInitialized = initializeFirebase();
+            if (isInitialized) {
+                loadDashboard();
+                loadTournaments();
+                loadSettings();
+                applyAdminUI(); 
+              
+            }
+        };
+        
+  
+        
+    </script>
+    
+   <div class="tabs admin-bottom-nav">
+    <button class="tab-btn active" onclick="switchTab('dashboard')">
+        <i class="fas fa-chart-line"></i> <span>Dashboard</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('tournaments')">
+        <i class="fas fa-gamepad"></i> <span>Tournaments</span>
+    </button>
+<button class="tab-btn" onclick="switchTab('matchesList')">
+    <i class="fas fa-tasks"></i> <span>Manage</span>
+</button>
+    <button class="tab-btn" onclick="switchTab('deposits')">
+        <i class="fas fa-wallet"></i> <span>Deposits</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('withdrawals')">
+        <i class="fas fa-money-bill-wave"></i> <span>Withdrawals</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('users')">
+        <i class="fas fa-users"></i> <span>Users</span>
+    </button>
+<button class="tab-btn" onclick="switchTab('notifications')">
+    <i class="fas fa-bell"></i>
+</button>
+    <button class="tab-btn" onclick="switchTab('settings')">
+        <i class="fas fa-cog"></i> <span>Settings</span>
+    </button>
+</div>
+   
+   
+   <!-- Admin Tournament Details Page -->
+<div id="tournamentDetailsPage" class="details-page" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100000; background: rgba(10, 10, 26, 0.95); overflow-y: auto; padding-bottom: 50px;">
+    <div class="details-header" style="background: rgba(255,255,255,0.05); padding: 15px; border-bottom: 1px solid var(--glass-border); display: flex; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px);">
+        <button class="back-btn" onclick="closeTournamentDetails()" style="background: rgba(255,255,255,0.1); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer;"><i class="fas fa-arrow-left"></i></button>
+        <div class="details-title" id="detailsPageTitle" style="font-size: 18px; font-weight: 800; color: white;">Tournament Details</div>
+    </div>
+    <div class="details-content" id="tournamentDetailsContent" style="padding: 20px; max-width: 600px; margin: 0 auto;">
+        <!-- এখানে জাভাস্ক্রিপ্ট দিয়ে ডাটা বসবে -->
+    </div>
+</div>
+   
+</body>
+</html>
